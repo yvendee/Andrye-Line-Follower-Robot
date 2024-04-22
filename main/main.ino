@@ -136,9 +136,13 @@ void loop(){
   duration1 = pulseIn(echoPin, HIGH, 10000);
   // Calculating the distance
   distance1 = duration1 * 0.034 / 2;
-  // Prints the distance on the Serial Monitor
-  Serial.print("Distance: ");
-  Serial.println(distance1);
+  // Prints the disd:\paid-projects\rosemarie-david\firmware\arduino\lcd_test\lcd_test.ctance on the Serial Monitor
+  // Serial.print("Distance: ");
+  // Serial.println(distance1);
+
+  if(distance1 > 0 ){  //object detected
+    stopMotors();
+  }
 
   char key = keypad.getKey();// Read the key
   
