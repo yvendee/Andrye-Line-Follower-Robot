@@ -140,9 +140,10 @@ void loop(){
   // Serial.print("Distance: ");
   // Serial.println(distance1);
 
-  if(distance1 > 0 ){  //object detected
+  if(distance1 < 1 ){  //object detected
     stopMotors();
   }
+
 
   char key = keypad.getKey();// Read the key
   
