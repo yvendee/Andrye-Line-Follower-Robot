@@ -37,6 +37,10 @@ byte colPins[COLS] = {A2, A3, A4, A5}; //connect to the column pinouts of the ke
 //Create an object of keypad
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 
+
+int mode = 9;
+
+
 void setup(){
   Serial.begin(9600);
 
@@ -121,27 +125,55 @@ void loop(){
   } else {
     // Both sensors are off the line
     // Stop
-    stopMotors();
+
+    if(mode == 9){
+      stopMotors();
+    }
+
+    if(mode == 1) { // goto table 1
+      stopMotors();
+      turnRight();
+      moveForward();
+      mode = 9;
+    }
+
+    if(mode == 2) { // goto table 2
+      stopMotors();
+      moveForward();
+      mode = 3;
+    }
+
+    if(mode == 3){
+      stopMotors();
+      mode = 9;
+    }
+
+    if(mode == 4) {
+      stopMotors();
+      moveForward();
+      mode = 9;
+    }
+    
   }
 
-  // // Clears the trigPin
-  // digitalWrite(trigPin, LOW);
-  // delayMicroseconds(2);
-  // // Sets the trigPin on HIGH state for 10 micro seconds
-  // digitalWrite(trigPin, HIGH);
-  // delayMicroseconds(10);
-  // digitalWrite(trigPin, LOW);
-  // // Reads the echoPin, returns the sound wave travel time in microseconds
-  // // duration1 = pulseIn(echoPin, HIGH, 1000000);
-  // duration1 = pulseIn(echoPin, HIGH, 10000);
-  // // Calculating the distance
-  // distance1 = duration1 * 0.034 / 2;
-  // // Serial.print("Distance: ");
-  // // Serial.println(distance1);
+  // Clears the trigPin
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  // Sets the trigPin on HIGH state for 10 micro seconds
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  // Reads the echoPin, returns the sound wave travel time in microseconds
+  // duration1 = pulseIn(echoPin, HIGH, 1000000);
+  duration1 = pulseIn(echoPin, HIGH, 10000);
+  // Calculating the distance
+  distance1 = duration1 * 0.034 / 2;
+  // Serial.print("Distance: ");
+  // Serial.println(distance1);
 
-  // if(distance1 < 1 ){  //object detected
-  //   stopMotors();
-  // }
+  if(distance1 < 1 ){  //object detected
+    stopMotors();
+  }
 
 
   char key = keypad.getKey();// Read the key
@@ -150,6 +182,30 @@ void loop(){
   if (key){
     Serial.print("Key Pressed : ");
     Serial.println(key);
+  }
+
+
+  if(key == "6") {
+    stopMotors();
+    moveForward();
+    mode = 1;
+  }
+
+
+  if(key == "9") {
+    stopMotors();
+    moveForward();
+    mode = 2;
+  }
+
+
+  if(key == "#") {
+    stopMotors();
+    turnRight();
+    delay(500);
+    turnRight();
+    moveForward();
+    mode = 4;
   }
 
   
